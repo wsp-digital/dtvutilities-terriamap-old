@@ -51,3 +51,4 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+certificateARN: "arn:aws:acm:region-id:account-id:certificate/certificate-id"

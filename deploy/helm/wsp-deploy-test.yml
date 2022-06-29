@@ -1,0 +1,7 @@
+global:
+  rollingUpdate:
+    maxUnavailable: 1
+  exposeNodePorts: true
+
+terriamap:
+  certificateARN: arn:aws:acm:ap-southeast-2:940728446396:certificate/10d047f1-951d-4193-96a7-b7c566001c5a
