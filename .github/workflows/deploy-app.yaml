@@ -1,0 +1,32 @@
+name: Deploy terriajs-app
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "The branch or ref to deploy"
+        required: true
+        default: "main"
+
+env:
+  AWS_DEFAULT_REGION: ap-southeast-2
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: "next"
+
+      - name: Update Dependencies
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm dependency update deploy/helm/terria
+
+      - name: 'Deploy'
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade --namespace terria --install --timeout 9999s terria deploy/helm/terria -f deploy/helm/wsp-deploy-test.yml --set "terriamap.image.full=940728446396.dkr.ecr.ap-southeast-2.amazonaws.com/terria-test:${IMAGE_TAG}"
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
