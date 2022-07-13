@@ -24,6 +24,9 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      - name: Misc
+        run: kubectl version
+
       - name: Update Dependencies
         run:  helm dependency update deploy/helm/terria
 
