@@ -10,6 +10,8 @@ on:
 
 env:
   AWS_DEFAULT_REGION: ap-southeast-2
+  ACTIONS_RUNNER_POD_NAME: k8-dtv-terria-single-v9mmg-xdzfs
+  ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER: true
 
 jobs:
   deployment:
