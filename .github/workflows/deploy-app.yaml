@@ -10,15 +10,17 @@ on:
 
 env:
   AWS_DEFAULT_REGION: ap-southeast-2
+  ACTIONS_RUNNER_POD_NAME: k8-dtv-terria-single-v9mmg-xdzfs
+  ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER: true
 
 jobs:
   deployment:
-    runs-on: 'ubuntu-latest'
+    runs-on: [self-hosted, linux]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: "next"
+          ref: "main"
 
       - name: Update Dependencies
         uses: WyriHaximus/github-action-helm3@v2
