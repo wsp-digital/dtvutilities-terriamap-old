@@ -16,6 +16,8 @@ env:
 jobs:
   deployment:
     runs-on: [self-hosted, linux]
+    container:
+      image: alpine/helm
     steps:
       - name: Checkout
         uses: actions/checkout@v3
