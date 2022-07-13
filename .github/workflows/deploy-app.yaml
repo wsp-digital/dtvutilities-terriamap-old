@@ -25,7 +25,7 @@ jobs:
 #          ref: ${{ inputs.ref }}
 
       - name: Misc
-        run: kubectl version
+        run: kubectl get pods --all-namespaces
 
 #      - name: Update Dependencies
 #        run:  helm dependency update deploy/helm/terria
