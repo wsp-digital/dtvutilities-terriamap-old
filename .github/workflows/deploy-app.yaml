@@ -20,7 +20,7 @@ jobs:
       image: bitnami/kubectl
     steps:
       - name: set kubeconfig
-        run: echo -n "${{ secrets.KUBECONFIG }}" | base64 --decode > config
+        run: sudo -c "echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > config"
 
       - name: Check namespace
         #run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
@@ -39,7 +39,7 @@ jobs:
           ref: ${{ inputs.ref }}
 
       - name: set kubeconfig
-        run: echo -n "${{ secrets.KUBECONFIG }}" | base64 --decode > config
+        run: sudo -c "echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > config"
 
       - name: Update Dependencies
         uses: WyriHaximus/github-action-helm3@v2
