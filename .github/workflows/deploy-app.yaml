@@ -18,6 +18,7 @@ jobs:
     runs-on: [self-hosted, linux]
     container:
       image: bitnami/kubectl
+      options: --user root
     steps:
       - name: set kubeconfig
         run: |
@@ -34,12 +35,13 @@ jobs:
     runs-on: [self-hosted, linux]
     container:
       image: alpine/helm
+      options: --user root
     steps:
       - name: set kubeconfig
         run: |
           mkdir ${HOME}/.kube
           echo ${{ secrets.KUBECONFIG }} | base64 --decode > ${HOME}/,kube/config
-          
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
