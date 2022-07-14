@@ -12,6 +12,7 @@ env:
   AWS_DEFAULT_REGION: ap-southeast-2
   ACTIONS_RUNNER_POD_NAME: k8-dtv-terria-single-v9mmg-xdzfs
   ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER: true
+  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
 jobs:
   preamble:
@@ -19,11 +20,11 @@ jobs:
     container:
       image: bitnami/kubectl
     steps:
-      - name: set kubeconfig
-        run: echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > /tmp/config
-
-      - name: export contents to environment
-        run : export KUBECONFIG=/tmp/config
+    #  - name: set kubeconfig
+    #    run: echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > /tmp/config
+#
+    #  - name: export contents to environment
+    #    run : export KUBECONFIG=/tmp/config
 
       - name: Check namespace
         #run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
@@ -40,12 +41,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ inputs.ref }}
-
-      - name: set kubeconfig
-        run: echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > /tmp/config
-
-      - name: export contents to environment
-        run : export KUBECONFIG=/tmp/config
 
       - name: Update Dependencies
         uses: WyriHaximus/github-action-helm3@v2
