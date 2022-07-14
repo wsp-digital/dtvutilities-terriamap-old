@@ -27,7 +27,7 @@ jobs:
       - name: Update Dependencies
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm dependency update deploy/helm/wsp-magda
+          exec: helm dependency update deploy/helm/terria
 
       - name: 'Deploy'
         uses: WyriHaximus/github-action-helm3@v2
