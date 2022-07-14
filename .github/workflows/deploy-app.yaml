@@ -12,7 +12,6 @@ env:
   AWS_DEFAULT_REGION: ap-southeast-2
   ACTIONS_RUNNER_POD_NAME: k8-dtv-terria-single-v9mmg-xdzfs
   ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER: true
-  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
 jobs:
   preamble:
@@ -20,11 +19,10 @@ jobs:
     container:
       image: bitnami/kubectl
     steps:
-    #  - name: set kubeconfig
-    #    run: echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > /tmp/config
-#
-    #  - name: export contents to environment
-    #    run : export KUBECONFIG=/tmp/config
+      - name: set kubeconfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBECONFIG }} | base64 --decode > ${HOME}/,kube/config
 
       - name: Check namespace
         #run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
@@ -37,6 +35,11 @@ jobs:
     container:
       image: alpine/helm
     steps:
+      - name: set kubeconfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBECONFIG }} | base64 --decode > ${HOME}/,kube/config
+          
       - name: Checkout
         uses: actions/checkout@v3
         with:
