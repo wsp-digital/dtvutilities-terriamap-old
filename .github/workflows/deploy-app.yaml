@@ -22,6 +22,9 @@ jobs:
       - name: set kubeconfig
         run: echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > /tmp/config
 
+      - name: export contents to environment
+        run : export KUBECONFIG=/tmp/config
+
       - name: Check namespace
         #run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
         run: kubectl create namespace dtvutilities-terria
@@ -40,6 +43,9 @@ jobs:
 
       - name: set kubeconfig
         run: echo -n '${{ secrets.KUBECONFIG }}' | base64 --decode > /tmp/config
+
+      - name: export contents to environment
+        run : export KUBECONFIG=/tmp/config
 
       - name: Update Dependencies
         uses: WyriHaximus/github-action-helm3@v2
