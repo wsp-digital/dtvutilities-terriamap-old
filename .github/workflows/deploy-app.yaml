@@ -20,7 +20,8 @@ jobs:
       image: bitnami/kubectl
     steps:
       - name: Check namespace
-        run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
+        #run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
+        run: kubectl create namespace dtvutilities-terria
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
