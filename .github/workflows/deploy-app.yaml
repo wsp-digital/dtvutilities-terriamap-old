@@ -43,6 +43,12 @@ jobs:
           mkdir ${HOME}/.kube
           echo ${{ secrets.KUBECONFIG }} | base64 -d > ${HOME}/.kube/config
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::940728446396:role/GitHubRole-Build-7QP2Q93CJ5GH
+          aws-region: ${{env.AWS_DEFAULT_REGION}}
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
