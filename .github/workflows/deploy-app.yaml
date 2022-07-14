@@ -26,8 +26,8 @@ jobs:
           echo ${{ secrets.KUBECONFIG }} | base64 --decode > ${HOME}/.kube/config
 
       - name: Check namespace
-        #run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
-        run: kubectl create namespace dtvutilities-terria
+        run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
+        #run: kubectl create namespace dtvutilities-terria
         #env:
         #  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
@@ -48,12 +48,8 @@ jobs:
           ref: ${{ inputs.ref }}
 
       - name: Update Dependencies
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: helm dependency update deploy/helm/terria
+        run: helm dependency update deploy/helm/terria
 
       - name: 'Deploy'
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: helm upgrade --namespace dtvutilities-terria --install --timeout 9999s terria deploy/helm/terria -f deploy/helm/wsp-deploy-test.yml --set "terriamap.image.full=940728446396.dkr.ecr.ap-southeast-2.amazonaws.com/terria-test:${GITHUB_SHA::8}"
+        run: helm upgrade --namespace dtvutilities-terria --install --timeout 9999s terria deploy/helm/terria -f deploy/helm/wsp-deploy-test.yml --set "terriamap.image.full=940728446396.dkr.ecr.ap-southeast-2.amazonaws.com/terria-test:${GITHUB_SHA::8}"
         #  kubeconfig: '${{ secrets.KUBECONFIG }}'
