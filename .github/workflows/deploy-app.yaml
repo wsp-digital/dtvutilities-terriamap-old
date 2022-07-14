@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Check namespace
         run: kubectl create namespace dtvutilities-terria --dry-run=client -o yaml | kubectl apply -f -
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
   deployment:
     runs-on: [self-hosted, linux]
