@@ -17,18 +17,20 @@ jobs:
   deployment:
     runs-on: [self-hosted, linux]
     container:
-      image: bitnami/kubectl
+      image: alpine/helm
     steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#        with:
-#          ref: ${{ inputs.ref }}
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
 
-      - name: Misc
-        run: kubectl get pods --all-namespaces
+      - name: Update Dependencies
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm dependency update deploy/helm/wsp-magda
 
-#      - name: Update Dependencies
-#        run:  helm dependency update deploy/helm/terria
-#
-#      - name: 'Deploy'
-#        run: helm upgrade --namespace terria --install --timeout 9999s terria deploy/helm/terria -f deploy/helm/wsp-deploy-test.yml --set "terriamap.image.full=940728446396.dkr.ecr.ap-southeast-2.amazonaws.com/terria-test:${GITHUB_SHA::8}"
+      - name: 'Deploy'
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade --install --wait --atomic magda deploy/helm/wsp-magda -n magda -f deploy/helm/wsp-deploy-test.yml --set "magda.magda-core.web-server.image.tag=${GITHUB_SHA::8}"
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
