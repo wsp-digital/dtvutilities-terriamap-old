@@ -31,8 +31,18 @@ jobs:
         #env:
         #  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
+  preparation:
+    needs: [preabmle]
+    runs-on: [self-hosted, linux]
+    container:
+      image: amazon/aws-cli
+      options:  --user root
+    steps:
+      - name: Log into Amazon ECR
+        run: aws ecr get-login-password --region ap-southeast-2 --profile saml | docker login --username AWS --password-stdin 940728446396.dkr.ecr.ap-southeast-2.amazonaws.com/terria-test
+
   deployment:
-    needs: preamble
+    needs: [preamble, preparation]
     runs-on: [self-hosted, linux]
     container:
       image: alpine/helm
@@ -43,15 +53,15 @@ jobs:
           mkdir ${HOME}/.kube
           echo ${{ secrets.KUBECONFIG }} | base64 -d > ${HOME}/.kube/config
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::940728446396:role/GitHubRole-Build-7QP2Q93CJ5GH
-          aws-region: ${{env.AWS_DEFAULT_REGION}}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      #- name: Configure AWS credentials
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    role-to-assume: arn:aws:iam::940728446396:role/GitHubRole-Build-7QP2Q93CJ5GH
+      #    aws-region: ${{env.AWS_DEFAULT_REGION}}
+#
+      #- name: Login to Amazon ECR
+      #  id: login-ecr
+      #  uses: aws-actions/amazon-ecr-login@v1
 
       - name: Checkout
         uses: actions/checkout@v3
