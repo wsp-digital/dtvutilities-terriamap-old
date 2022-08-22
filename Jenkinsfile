@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     VERSION = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                    CONTAINER_NAME "${env.ENVIRONMENT == "uat" ? "${PROJECT}" : "${PROJECT}-test"}"
+                    CONTAINER_NAME = "${env.ENVIRONMENT == "uat" ? "${PROJECT}" : "${PROJECT}-test"}"
                     IMAGE = "$CONTAINER_NAME:${VERSION}"
                     currentBuild.displayName = "#${env.BUILD_ID}-${VERSION}"
                 }
